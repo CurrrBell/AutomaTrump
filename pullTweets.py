@@ -1,20 +1,31 @@
+import re
+import random
+import string
 from twython import Twython
 from auth import APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET
 
-def main():
-
+def pullTweets():
 
     twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+    raw_tweets = twitter.get_user_timeline(screen_name="realDonaldTrump",count=200)
 
-    user_timeline = twitter.get_user_timeline(screen_name="realDonaldTrump",count=20)
-    for tweet in user_timeline:
+    #get the first 50 tweets Trump wrote himself
+
+    trump_tweets = []
+
+    for tweet in raw_tweets:
+        if(len(trump_tweets) > 50):
+            break
+
         if(tweet['source'] == "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>"):
-            print (tweet['text'])
-            print (tweet['source'])
-            print ()
+            trump_tweets.append(tweet['text'])
 
+    #randomly select 5 tweets from these 50 to mash up
 
-#    for tweet in twitter.get_home_timeline():
-#        print(tweet['text'])
+    using_tweets = []
 
-#    twitter.update_status(status='beep boop')
+    for i in range(5):
+        index = random.randrange(0,len(trump_tweets))
+        using_tweets.append(trump_tweets[index])
+
+    return using_tweets
