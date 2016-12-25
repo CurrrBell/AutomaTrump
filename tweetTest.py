@@ -20,9 +20,10 @@ def main():
 
     using_tweets = []
 
-    for i in range(5):
+    for i in range(3):
         index = random.randrange(0,len(trump_tweets))
         using_tweets.append(trump_tweets[index])
+        print(index)
 
 
     #now that we have our tweets, we create a new one using Markov Chains
@@ -65,7 +66,7 @@ def main():
         while(len(wordCount[currentWord]) > 0 and (len(newTweet) + len(currentWord)) < 140):
             nextWord = wordCount[currentWord][random.randrange(0, len(wordCount[currentWord]))]
 
-            if((currentWord == "." or currentWord == "?" or currentWord == "!") and wordCounter > 1):
+            if(currentWord == "." and wordCounter > 1):
                 if(random.randrange(0,2) > 0):
                     newTweet += currentWord
                     break
@@ -79,6 +80,6 @@ def main():
 
         #we have our tweet, now we post it
 
-        twitter.update_status(status=newTweet)
+        print(newTweet)
 
     generateTweet()
