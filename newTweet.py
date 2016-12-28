@@ -6,7 +6,7 @@ from auth import APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET
 from pullTweets import pullTweets
 from chain import chopUpTweet
 
-def main():
+def generateTweet():
     twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
     tweetSource = pullTweets()
 
@@ -24,26 +24,25 @@ def main():
 
     #now that we have our word counts, synthesize a tweet
 
-    def generateTweet():
-        newTweet = ""
-        tweetStart = tweetStarts[random.randrange(0,len(tweetStarts))]
-        currentWord = tweetStart
+    newTweet = ""
+    tweetStart = tweetStarts[random.randrange(0,len(tweetStarts))]
+    currentWord = tweetStart
 
-        while(len(wordCount[currentWord]) > 0 and (len(newTweet) + len(currentWord)) < 140):
-            nextWord = wordCount[currentWord][random.randrange(0, len(wordCount[currentWord]))]
+    while(len(wordCount[currentWord]) > 0 and (len(newTweet) + len(currentWord)) < 140):
+        nextWord = wordCount[currentWord][random.randrange(0, len(wordCount[currentWord]))]
 
-            if(currentWord in string.punctuation):
-                newTweet += currentWord
-            else:
-                newTweet += " " + currentWord
+        if(currentWord in string.punctuation):
+            newTweet += currentWord
+        else:
+            newTweet += " " + currentWord
 
-            if(nextWord == "EOF"):
-                break
+        if(nextWord == "EOF"):
+            break
 
-            currentWord = nextWord
+        currentWord = nextWord
 
-        #we have our tweet, now we post it
+    #we have our tweet, now we post it
 
-        twitter.update_status(status=newTweet)
-
-    generateTweet()
+    twitter.update_status(status=newTweet)
+    #
+    # generateTweet()
