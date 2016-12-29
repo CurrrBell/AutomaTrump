@@ -33,6 +33,7 @@ def main():
     def schedule_tweet():
         scheduler.enter(0, 1, randomTweet, ())
         scheduler.run()
+        print("tweet")
         time.sleep(random.randrange(3600, 21600))
 
     for i in range(100):
