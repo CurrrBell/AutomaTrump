@@ -34,7 +34,7 @@ def main():
         scheduler.enter(0, 1, randomTweet, ())
         scheduler.run()
         print("tweet", time.strftime("%H:%M:%S", time.localtime()))
-        time.sleep(random.randrange(3600, 14400))
+        time.sleep(random.randrange(1800, 14400))
 
     for i in range(100):
         schedule_tweet()
