@@ -3,7 +3,7 @@ import random
 import string
 
 def chopUpTweet(wordCount, tweetStarts, tweet):
-    wordsInTweet = re.findall(r"[@a-zA-Z0-9'-]+|[.,!?;:]|[0-9]+", tweet)
+    wordsInTweet = re.findall(r"\b[A-Z][a-zA-Z\.]*[A-Z]\b\.?|[0-9:0-9]+|[@a-zA-Z0-9'-_]+|[.,!?;:]", tweet)
     if(wordsInTweet[0] == "."):
         tweetStarts.append(wordsInTweet[1])
     else:
