@@ -14,13 +14,11 @@ def pullTweets():
     trump_tweets = []
 
     for tweet in raw_tweets:
-        if(len(trump_tweets) > 50):
-            break
 
-        if(tweet['source'] == "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>"):
+        if(tweet['source'] == "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>" and tweet['text'][0].isupper()):
             trump_tweets.append(tweet['text'])
 
-    #randomly select 5 tweets from these 50 to mash up
+    #randomly select 5 tweets from these to mash up
 
     using_tweets = []
 

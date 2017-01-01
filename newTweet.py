@@ -36,7 +36,7 @@ def generateTweet():
         else:
             newTweet += " " + currentWord
 
-        if(nextWord == "EOF"):
+        if(nextWord == "EOF" or currentWord.endswith(".") or currentWord.endswith("!") or currentWord.endswith("?")):
             break
 
         currentWord = nextWord
