@@ -37,7 +37,7 @@ def main():
             else:
                 newTweet += " " + currentWord
 
-            if(nextWord == "EOF" or currentWord.endswith(".") or currentWord.endswith("!") or currentWord.endswith("?")):
+            if(nextWord == "EOF" or (currentWord.endswith(".") and not currentWord.equals("U.S.")) or currentWord.endswith("!") or currentWord.endswith("?")):
                 break
 
             currentWord = nextWord
