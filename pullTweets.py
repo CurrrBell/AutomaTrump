@@ -22,8 +22,9 @@ def pullTweets():
 
     using_tweets = []
 
-    for i in range(5):
+    while(len(using_tweets) < 5):
         index = random.randrange(0,len(trump_tweets))
-        using_tweets.append(trump_tweets[index])
+        if(trump_tweets[index][-2:] != ".."):
+            using_tweets.append(trump_tweets[index])
 
     return using_tweets
