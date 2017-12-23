@@ -1,30 +1,51 @@
-import re
-import random
-import string
+import re, random, string, json, sys
 from twython import Twython
 from auth import APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET
 
 def pullTweets():
 
     twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-    raw_tweets = twitter.get_user_timeline(screen_name="realDonaldTrump",count=200)
+    rawTweets = twitter.get_user_timeline(screen_name="realDonaldTrump",count=200,tweet_mode='extended')
 
-    #get the first 50 tweets Trump wrote himself
+    trumpTweets = []
 
-    trump_tweets = []
+    for tweet in rawTweets:
 
-    for tweet in raw_tweets:
+        tweetText = tweet['full_text']
 
-        if(tweet['source'] == "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>" and tweet['text'][0].isupper()):
-            trump_tweets.append(tweet['text'])
+        if(isTrumpTweet(tweet)):
+            trumpTweets.append(tweetText)
 
     #randomly select 5 tweets from these to mash up
 
-    using_tweets = []
+    tweetsToUse = []
 
-    while(len(using_tweets) < 5):
-        index = random.randrange(0,len(trump_tweets))
-        if(trump_tweets[index][-2:] != ".."):
-            using_tweets.append(trump_tweets[index])
+    while(len(tweetsToUse) < 5):
+        index = random.randrange(0,len(trumpTweets))
+        if(not isMultiTweetRant(trumpTweets[index])):
+            tweetsToUse.append(trumpTweets[index])
 
-    return using_tweets
+    return tweetsToUse
+
+
+def isMultiTweetRant(text):
+    return text[-2:] == ".."
+
+def isProperSentence(text):
+    return text[0].isupper()
+
+def isTrumpStaff(tweet):
+    return len(tweet['entities']['hashtags']) > 0 or ("media" in tweet['entities'].keys())
+
+def isTrumpTweet(tweet):
+    if(not isProperSentence(tweet['full_text'])):
+        return False
+
+    if(tweet['is_quote_status'] or ("retweeted_status" in tweet.keys()) or ("possibly_sensitive" in tweet.keys())):        
+        return False
+
+    if(isTrumpStaff(tweet)):
+        return False
+
+    return True
+

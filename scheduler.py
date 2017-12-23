@@ -6,7 +6,7 @@ import string
 from twython import Twython
 from auth import APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET
 from pullTweets import pullTweets
-from chain import chopUpTweet
+from chain import populateWordMap
 from newTweet import generateTweet
 
 def main():
@@ -26,12 +26,12 @@ def main():
         tweetStarts = []
 
         for tweet in tweetSource:
-            chopUpTweet(wordCount, tweetStarts, tweet)
+            populateWordMap(wordCount, tweetStarts, tweet)
 
         generateTweet()
 
     def schedule_tweet():
-        scheduler.enter(0, 1, randomTweet, ())
+        scheduler.enter(0, 1, generateTweet, ())
         scheduler.run()
         print("tweet", time.strftime("%H:%M:%S", time.localtime()))
         time.sleep(random.randrange(21600, 43200))
